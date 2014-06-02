@@ -25,6 +25,12 @@ module API
 					end
 				end
 
+				desc "Register a new user"
+				params do 
+					requires :password, type: String, desc: "Password for user"
+					requires :email, type: String, desc: "Email for user"
+					requires :username, type: String, desc: "Username"
+				end
 				post :new do 
 					email = params[:email]
 					password = params[:password]
@@ -41,9 +47,9 @@ module API
 					end
 				end
 
-				get do 
-					{pong:"pong"}
-				end
+				# get do 
+				# 	{pong:"pong"}
+				# end
 			end
 		end
 	end

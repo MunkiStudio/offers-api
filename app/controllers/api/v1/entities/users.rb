@@ -17,6 +17,12 @@ module API
 				expose :comments do |object,options|
 					Comment.where(:user => object)
 				end
+
+				expose :notifications 
+				expose :likes
+				expose :groups
+				expose :memberships
+
 				with_options(format_with: :iso_timestamp) do
 				  expose :created_at
 				  expose :updated_at

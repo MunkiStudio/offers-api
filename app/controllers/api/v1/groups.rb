@@ -23,12 +23,8 @@ module API
 					user_ids = params[:user_ids]
 					group = current_user.groups.find(params[:id])
 					if group
-						verb = 'NEW_GROUP'
-						sender = current_user
 						user_ids.each do |u|
 							group.memberships.create(:user_id => u)
-							receive = User.find(u)
-							API::V1::Workers::NotificationWorker.perform_async(sender,receive,nil,verb)
 						end
 						present group, with: API::V1::Entities::Groups, root:'objects'
 					end
@@ -46,13 +42,8 @@ module API
 					authenticate!
 					group = current_user.groups.find(params[:id])
 					if params[:user_ids]
-						verb = 'DELETED_FROM_GROUP'
-						sender = current_user
 						params[:user_ids].each do |u| 
 							group.memberships.find_by(:user_id => u).delete
-							#Notificar que se me elimino del grupo
-							receive = User.find(u)
-							NotificationWorker.perform_async(sender,receive,nil,verb)
 						end
 					elsif params[:attrs]
 						group.update params[:attrs]
@@ -64,10 +55,7 @@ module API
 				delete ":id" do 
 					authenticate!
 					group = current_user.groups.find(params[:id])
-					if group
-						group.destroy
-						#Notificar eliminacion del grupo
-					end
+					group.destroy if group
 					""	
 				end
 

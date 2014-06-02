@@ -27,6 +27,7 @@ module OffersApi
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     # config.paths.add "app/api", glob: "**/*.rb"
-    # config.autoload_paths += Dir["#{Rails.root}/app/api/*"]
+    config.autoload_paths += Dir["#{Rails.root}/app/workers/*"]
+    config.eager_load_paths += Dir["#{Rails.root}/app/workers/*"]
   end
 end

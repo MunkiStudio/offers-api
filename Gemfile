@@ -10,7 +10,8 @@ gem 'grape-kaminari'
 gem 'grape-entity'
 
 # To use ActiveModel has_secure_password
-gem 'bcrypt-ruby', '~> 3.0.0'
+# gem 'bcrypt-ruby', '~> 3.1.2'
+gem 'bcrypt', '~> 3.1.7'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
@@ -33,7 +34,7 @@ gem 'slim'
 gem "better_errors", :group => :development
 gem "binding_of_caller", :group => :development
 gem 'foreman', :group => :development
-gem 'unicorn',:group => :development
+gem 'thin', :group => :development
 
 gem 'sqlite3'
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
@@ -46,7 +47,7 @@ group :development, :test do
 	gem 'factory_girl_rails','~> 4.0'
 	gem 'faker'
 	gem 'rb-fsevent' if `uname` =~ /Darwin/
-	gem 'guard-rspec','~> 4.2.8', require: false
+	gem 'guard-rspec', require: false
 	gem 'terminal-notifier-guard'
 
 end
@@ -55,4 +56,6 @@ group :test do
 	gem 'database_cleaner'
 	gem 'rspec-expectations'
 	gem 'rspec-sidekiq'
+	gem 'fuubar'
+	gem 'simplecov', '~> 0.7.1', :require => false
 end

@@ -6,7 +6,7 @@ module API
 
 			resource :users do 
 				desc "Return paginated list of users"
-				paginate
+				paginate :per_page => 10, :max_per_page => 10
 				get do
 					authenticate!
 					users = User.order(:id)
@@ -24,6 +24,11 @@ module API
 				desc "Return user data identified by id"
 				params do 
 					requires :id, type: Integer, desc: "ID of the User"
+				end
+
+				desc "Return a User identified by ID"
+				params do 
+					requires :id, type: Integer, desc: "Identificador del user"
 				end
 				get ":id" do
 					authenticate!

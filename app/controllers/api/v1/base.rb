@@ -13,7 +13,8 @@ module API
 			mount API::V1::Comments
 			mount API::V1::Categories
 			mount API::V1::Groups
-			add_swagger_documentation base_path: "/api",api_version: 'v1',hide_documentation_path: true
+			mount API::V1::Notifications
+			add_swagger_documentation base_path: "/api",api_version: 'v1',hide_documentation_path: false
 			
 		end
 	end

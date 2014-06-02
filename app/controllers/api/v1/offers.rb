@@ -5,13 +5,17 @@ module API
 			include API::V1::Defaults
 			resource :offers do
 				desc "Return paginated list of offers"
-				paginate
+				paginate :per_page => 10, :max_per_page => 10
 				get do 
 					authenticate!
 					offers = Offer.order(:id)
 					present paginate(offers), with: API::V1::Entities::Offers, root:'objects'
 				end
 
+				desc "Create a new offer"
+				params do 
+					requires :offer, type: Hash, desc: "Offer attributes"
+				end
 				post do 
 					authenticate!
 					image = params[:offer][:image]
@@ -24,12 +28,20 @@ module API
 
 				end
 
+				desc "Return an Offer identified by ID"
+				params do 
+					requires :id, type: Integer, desc: "Identificador del offer"
+				end
 				get ":id" do
 					authenticate!
 					offer = Offer.find(params[:id])
 					present offer, with: API::V1::Entities::Offers,root:'objects'
 				end
 
+				desc "Delete an Offer identified by ID"
+				params do 
+					requires :id, type: Integer, desc: "Identificador del offer"
+				end
 				delete ":id" do 
 					authenticate!
 					offer = Offer.where(user_id:current_user.id).find(params[:id])
@@ -41,6 +53,10 @@ module API
 					end
 				end
 
+				desc "Update an Offer identified by ID"
+				params do 
+					requires :id, type: Integer, desc: "Identificador del offer"
+				end
 				put ':id' do
 					authenticate!
 					offer = Offer.where(user_id:current_user.id).find(params[:id])

@@ -24,9 +24,8 @@ describe API::V1 do
 			it 'get a list of paginated users' do 
 				users = FactoryGirl.create_list(:user,10)
 				get '/api/v1/users', data
-				json_d = JSON.parse(response.body)
 				expect(response).to be_success
-				expect(json_d['objects'].length).to eq(10)
+				expect(json['objects'].length).to eq(10)
 				
 				expect(response.headers['X-Total-Pages']).to eq("2")
 				expect(response.headers['X-Total']).to eq("11")
@@ -54,7 +53,6 @@ describe API::V1 do
 			it 'sends a list of paginated users' do 
 				users = FactoryGirl.create_list(:user,10)
 				get '/api/v1/users',data
-				json_d = JSON.parse(response.body)
 				expect(response.status).to eq(401)
 			end
 
@@ -69,14 +67,12 @@ describe API::V1 do
 			it 'get on user identified by id' do 
 				user = FactoryGirl.create(:user)
 				get "/api/v1/users/#{user.id}"
-				puts json
 				expect(response.status).to eq(401)
 			end
 
 			it 'get a list of paginated users' do 
 				users = FactoryGirl.create_list(:user,10)
 				get '/api/v1/users'
-				json_d = JSON.parse(response.body)
 				expect(response.status).to eq(401)
 			end
 		end

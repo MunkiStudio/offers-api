@@ -4,7 +4,7 @@ module API
 			include API::V1::Defaults
 			resource :categories do 
 				desc "Get the paginated list of categories and offers associated"
-				paginate
+				paginate :per_page => 10, :max_per_page => 10
 				get do 
 					authenticate!
 					categories = Category.order(:name)
@@ -12,6 +12,7 @@ module API
 					
 				end
 
+				desc "Get a category identified by ID"
 				get ":id" do 
 					authenticate!
 					category = Category.where('id = ? or name = ?', params[:id], params[:id]).first

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140528163922) do
+ActiveRecord::Schema.define(version: 20140530040721) do
 
   create_table "api_keys", force: true do |t|
     t.string   "access_token"
@@ -83,20 +83,20 @@ ActiveRecord::Schema.define(version: 20140528163922) do
   add_index "memberships", ["user_id"], name: "index_memberships_on_user_id"
 
   create_table "notifications", force: true do |t|
-    t.integer  "user_id"
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
+    t.integer  "target_id"
+    t.string   "target_type"
+    t.integer  "object_id"
+    t.string   "object_type"
     t.string   "verb"
-    t.integer  "subject_id",                   null: false
-    t.string   "subject_type",                 null: false
-    t.integer  "where_id"
-    t.string   "where_type"
     t.boolean  "readed",       default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "notifications", ["subject_id"], name: "index_notifications_on_subject_id"
-  add_index "notifications", ["subject_type"], name: "index_notifications_on_subject_type"
-  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id"
+  add_index "notifications", ["recipient_id"], name: "index_notifications_on_recipient_id"
+  add_index "notifications", ["sender_id"], name: "index_notifications_on_sender_id"
 
   create_table "offers", force: true do |t|
     t.float    "latitude"

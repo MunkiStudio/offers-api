@@ -7,6 +7,9 @@ class Offer < ActiveRecord::Base
 
   has_many :likes
   has_many :liking_users, :through => :likes, :source => :user
+
+  has_many :notifications, :as => :target
+  has_many :notifications, :as => :object
   
   has_attached_file :image, :styles => {:thumb => "100x100>"}
   validates_attachment_content_type :image, :content_type => /\Aimage/

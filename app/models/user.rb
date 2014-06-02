@@ -12,7 +12,8 @@ class User < ActiveRecord::Base
 	has_many :comments , :dependent => :destroy
 	has_many :groups, :through =>  :memberships
 	has_many :memberships, :dependent => :destroy
-	has_many :notifications
+	has_many :notifications, :foreign_key => 'recipient_id', :class_name => 'Notification', :source => :recipient
+	has_many :sended_notifications, :foreign_key => 'sender_id', :class_name => 'Notification', :source => :sender
 	has_many :likes
 	has_many :liked_offers, :through => :likes, :source => :offer
 	
