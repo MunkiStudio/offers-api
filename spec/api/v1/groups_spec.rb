@@ -36,7 +36,6 @@ describe API::V1 do
 				data[:user_ids].push(u.id)
 			end
 			post "/api/v1/groups/#{group.id}",data,headers
-			puts json
 			expect(response).to be_success
 			expect(json['objects']['memberships'].length).to eq(4)
 		end

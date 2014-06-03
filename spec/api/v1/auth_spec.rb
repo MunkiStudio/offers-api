@@ -25,6 +25,7 @@ describe API::V1::Auth do
 			@token = json['token']
 		end
 
+
 		it 'login with email and password' do 
 			data = {
 				:login => @user[:email],
@@ -58,8 +59,6 @@ describe API::V1::Auth do
 			}
 			post '/api/v1/auth/new',user 
 			expect(response.status).to eq(400)
-			json_d = JSON.parse(response.body)
-			expect(json_d['error']).to eq('Bad Params')
 		end
 	end
 end
