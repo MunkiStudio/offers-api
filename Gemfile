@@ -19,12 +19,11 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'grape-rabl'
 
 # Use unicorn as the app server
-
+gem 'unicorn'
 
 gem 'geocoder'
 gem 'sidekiq'
 gem 'sinatra', require: false
-gem 'slim'
 gem 'koala'
 
 # Deploy with Capistrano

@@ -1,12 +1,19 @@
 language: ruby
 rvm:
-  - 2.0.0
+- 2.0.0
 bundler_args: --without production
 cache: bundler
 script:
-  - RAILS_ENV=test bundle exec rake db:migrate
-  - bundle exec rspec
+- RAILS_ENV=test bundle exec rake db:migrate
+- bundle exec rspec
 notifications:
   email:
     recipients:
-      - matias@munki.cl
+    - matias@munki.cl
+deploy:
+  provider: heroku
+  api_key:
+    secure: SepEN/W6Krjig28nkNoo/OEEz5a0Ykk+eps//86dHWNl1AWR4Zhvb3Dz6TOsmIce8n3o7itAcTRQizfqUQslZHrjvQSBuVqor72K4FUUpqOG2oVKcR4iUoiNi8DqowT2L9KOUUYhDWHhRblqOleILYLUBzFFD2YBIfxtoze0q80=
+  app: offersapi
+  on:
+    repo: MunkiStudio/offers-api
