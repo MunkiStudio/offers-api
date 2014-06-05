@@ -7,29 +7,32 @@ describe API::V1 do
 			
 			let(:user) { FactoryGirl.create(:user) }
 			let(:token) { user.api_key.access_token }
-			let(:data) { {token: token} }
+			let(:headers) { {
+				'x-token' => user.api_key.access_token
+				}
+			}
 			it 'get me' do 
-				get '/api/v1/users/me',data
+				get '/api/v1/users/me',{},headers
 				expect(response.status).to eq(200)
 				expect(json['objects']['id']).to eq(user[:id])
 			end
 
 			it 'get one user identified by id' do
 				user = FactoryGirl.create(:user)
-				get "/api/v1/users/#{user.id}", data
+				get "/api/v1/users/#{user.id}",{},headers
 				expect(response).to be_success
 				expect(json['objects']['id']).to eq(user.id)
 			end
 
 			it 'get a list of paginated users' do 
 				users = FactoryGirl.create_list(:user,10)
-				get '/api/v1/users', data
+				get '/api/v1/users',{},headers
 				expect(response).to be_success
 				expect(json['objects'].length).to eq(10)
 				
 				expect(response.headers['X-Total-Pages']).to eq("2")
 				expect(response.headers['X-Total']).to eq("11")
-				get '/api/v1/users?page=2', data
+				get '/api/v1/users?page=2',{},headers
 				expect(response.headers['X-Page']).to eq("2")
 				
 			end
@@ -37,22 +40,24 @@ describe API::V1 do
 			
 		end
 		describe 'Without authorization with false token' do 
-			let(:data) { {:token => 'aaaaaaaa'}}
-
+			let(:headers) { {
+				'x-token' => 'aaaaaaa'
+				}
+			}
 			it 'get me' do 
-				get '/api/v1/users/me',data
+				get '/api/v1/users/me',{},headers
 				expect(response.status).to eq(401)
 			end
 
 			it 'sends one user identified by id' do 
 				user = FactoryGirl.create(:user)
-				get "/api/v1/users/#{user.id}",data
+				get "/api/v1/users/#{user.id}",{},headers
 				expect(response.status).to eq(401)
 			end
 
 			it 'sends a list of paginated users' do 
 				users = FactoryGirl.create_list(:user,10)
-				get '/api/v1/users',data
+				get '/api/v1/users',{},headers
 				expect(response.status).to eq(401)
 			end
 

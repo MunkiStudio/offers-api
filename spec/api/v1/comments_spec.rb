@@ -4,13 +4,15 @@ describe API::V1 do
 		describe 'With authorization' do 
 			let(:user) { FactoryGirl.create(:user) }
 			let(:token) { user.api_key.access_token }
-			let(:data) { {token: token} }
+			let(:headers){
+				{'x-token' => token}
+			}
 
 			it 'create a comment for and offer' do 
 				user2 = FactoryGirl.create(:user)
 				offer = FactoryGirl.create(:offer,user:user2)
 				comment = FactoryGirl.attributes_for(:comment)
-				post '/api/v1/comments',{token:token,comment:comment,offer:offer.id}
+				post '/api/v1/comments',{comment:comment,offer:offer.id},headers
 				expect(response).to be_success
 				expect(json['objects']['content']).to eq(comment[:content])
 				expect(json['objects']['user']['id']).to eq(user.id)
@@ -25,13 +27,13 @@ describe API::V1 do
 				FactoryGirl.create_list(:comment,3,user:user,offer:offer)
 				FactoryGirl.create_list(:comment,2,user:user2,offer:offer)
 				FactoryGirl.create_list(:comment,2,user:user2,offer:offer2)
-				get "/api/v1/comments/offer/#{offer.id}",data
+				get "/api/v1/comments/offer/#{offer.id}",{},headers
 				expect(response).to be_success
 				expect(json['objects'].length).to eq(5)
-				get "/api/v1/comments/offer/#{offer2.id}",data
+				get "/api/v1/comments/offer/#{offer2.id}",{},headers
 				expect(response).to be_success
 				expect(json['objects'].length).to eq(2)
-				get "/api/v1/comments/offer/300",data
+				get "/api/v1/comments/offer/300",{},headers
 				expect(response.status).to eq(404)
 			end
 

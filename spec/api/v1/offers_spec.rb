@@ -4,7 +4,10 @@ describe API::V1 do
 		
 		let(:user) { FactoryGirl.create(:user) }
 		let(:token) { user.api_key.access_token }
-		let(:data) { {token: token} }
+		let(:headers) { {
+			'x-token' => user.api_key.access_token
+			}
+		}
 		let(:categories) {FactoryGirl.create_list(:category,3)}
 
 		it 'can publish a new offer' do 
@@ -13,9 +16,9 @@ describe API::V1 do
 			categories.each do |c|
 				offer[:category_ids].push(c.id)
 			end
-			post '/api/v1/offers/',{:token => token,:offer => offer}
+			post '/api/v1/offers/',{:offer => offer},headers
 			expect(response).to be_success
-			get "/api/v1/offers/#{json['id']}",{:token => token}
+			get "/api/v1/offers/#{json['id']}",{},headers
 			expect(response).to be_success 
 			title = json['objects'][0]['title']
 			expect(title).to eq(offer[:title])
@@ -25,7 +28,7 @@ describe API::V1 do
 
 		it 'can get an offer identified by id' do 
 			offer = FactoryGirl.create(:offer)
-			get "/api/v1/offers/#{offer.id}",data
+			get "/api/v1/offers/#{offer.id}",{},headers
 			expect(response).to be_success
 			expect(json['objects']['id']).to eq(offer.id)
 		end
@@ -41,11 +44,11 @@ describe API::V1 do
 			post '/api/v1/auth/login',{:login => user.username,password:user.password}
 			token = json['token']
 			#Send delete
-			delete "/api/v1/offers/#{offer.id}",{:token => token}
+			delete "/api/v1/offers/#{offer.id}",{},{'x-token' => token}
 			expect(response).to be_success
-			get "/api/v1/offers/#{offer.id}",{:token => token}
+			get "/api/v1/offers/#{offer.id}",{},{'x-token' => token}
 			expect(response.status).to be(404)
-			delete "/api/v1/offers/#{offer2.id}",{:token => token}
+			delete "/api/v1/offers/#{offer2.id}",{},{'x-token' => token}
 			expect(response.status).to be(404)
 
 		end

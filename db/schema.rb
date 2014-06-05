@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140530040721) do
+ActiveRecord::Schema.define(version: 20140605032007) do
 
   create_table "api_keys", force: true do |t|
     t.string   "access_token"
@@ -137,9 +137,11 @@ ActiveRecord::Schema.define(version: 20140530040721) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "localization"
+    t.text     "fb_token"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["fb_token"], name: "index_users_on_fb_token"
   add_index "users", ["id"], name: "index_users_on_id", unique: true
   add_index "users", ["username"], name: "index_users_on_username", unique: true
 

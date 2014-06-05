@@ -25,6 +25,7 @@ gem 'geocoder'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'slim'
+gem 'koala'
 
 # Deploy with Capistrano
 # gem 'capistrano', :group => :development

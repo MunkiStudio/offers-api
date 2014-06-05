@@ -4,8 +4,7 @@ describe API::V1 do
 	describe 'Groups' do 
 		let(:user) { FactoryGirl.create(:user)}
 		let(:headers) { {
-			'x-token' => user.api_key.access_token,
-			'x-email' => user.email
+			'x-token' => user.api_key.access_token
 			}
 		}
 		it 'A User can create a group' do 
