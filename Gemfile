@@ -42,7 +42,7 @@ group :development, :test do
 	gem 'factory_girl_rails','~> 4.0'
 	gem 'faker'
 	gem 'guard-rspec', require: false
-	gem 'terminal-notifier-guard',
+	gem 'terminal-notifier-guard'
 	gem 'sqlite3'
 	gem "better_errors"
 	gem "binding_of_caller"
