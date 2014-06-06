@@ -6,7 +6,7 @@ module API
 				desc "Create a new comment for and offer form user"
 				post do
 					authenticate!
-					comment = Comment.new(params[:comment])
+					comment = Comment.new(params[:comment].to_h)
 					comment.user = current_user
 					comment.offer_id = params[:offer]
 					if comment.save

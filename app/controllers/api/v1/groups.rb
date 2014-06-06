@@ -6,7 +6,7 @@ module API
 				desc "Create a new group"
 				post do 
 					authenticate!
-					g = current_user.groups.create!(params[:group])
+					g = current_user.groups.create!(params[:group].to_h)
 					present g, with: API::V1::Entities::Groups, root:'objects'
 				end
 
@@ -46,7 +46,7 @@ module API
 							group.memberships.find_by(:user_id => u).delete
 						end
 					elsif params[:attrs]
-						group.update params[:attrs]
+						group.update params[:attrs].to_h
 					end		
 					present group, with: API::V1::Entities::Groups, root:'objects'
 				end

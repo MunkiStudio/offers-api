@@ -13,9 +13,6 @@ module API
 				end
 
 				desc "Create a new offer"
-				params do 
-					requires :offer, type: Hash, desc: "Offer attributes"
-				end
 				post do 
 					authenticate!
 					image = params[:offer][:image]
@@ -23,8 +20,9 @@ module API
 					hash = {}
 					image.instance_variables.each {|var| hash[var.to_s.delete("@")] = image.instance_variable_get(var)}
 					offer.image = ActionDispatch::Http::UploadedFile.new(image)
-					offer = current_user.offers.create!(params[:offer])
+					offer = current_user.offers.create!(params[:offer].to_h)
 					present  offer, with: API::V1::Entities::Offers, root:'objects'
+
 
 				end
 
@@ -61,7 +59,7 @@ module API
 					authenticate!
 					offer = Offer.where(user_id:current_user.id).find(params[:id])
 					if offer
-						offer.update params[:offer].except(:id)
+						offer.update params[:offer].except(:id).to_h
 						""
 					else
 						error_response(message: e.message, status: 404)
