@@ -25,19 +25,13 @@ gem 'geocoder'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'koala'
+gem 'foreman'
 
 # Deploy with Capistrano
 # gem 'capistrano', :group => :development
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
-gem "better_errors", :group => :development
-gem "binding_of_caller", :group => :development
-gem 'foreman', :group => :development
-gem 'thin', :group => :development
-
-gem 'sqlite3', :group => :development
-gem 'pg', :group => :production
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 
 
@@ -48,7 +42,10 @@ group :development, :test do
 	gem 'factory_girl_rails','~> 4.0'
 	gem 'faker'
 	gem 'guard-rspec', require: false
-	gem 'terminal-notifier-guard'
+	gem 'terminal-notifier-guard',
+	gem 'sqlite3'
+	gem "better_errors"
+	gem "binding_of_caller"
 end
 
 group :test, :development, :darwin do 
@@ -61,4 +58,9 @@ group :test do
 	gem 'rspec-sidekiq'
 	gem 'fuubar'
 	gem 'simplecov', '~> 0.7.1', :require => false
+end
+
+group :production do 
+	gem 'pg'
+	gem 'rails_12factor'
 end
