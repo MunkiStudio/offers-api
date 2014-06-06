@@ -40,28 +40,34 @@ module API
 
 				desc "Register a new user"
 				post :new do 
-					email = params[:email]
-					password = if params[:password] then params[:password] else Faker::Internet.password(8) end
-					username = params[:username]
-					fb_token = params[:fb_token]
-
-					if email and password and username
-						user = User.new(email:email,password:password,username:username)
-						if fb_token
-							user.fb_token = fb_token
-							user.first_name = params[:first_name]
-							user.last_name = params[:last_name]
-							user.gender    = params[:gender]
-							user.age       = params[:age]
-							user.localization = params[:localization]
-						end
-						if user.save
+					if params[:fb_token]
+						user = User.where(:fb_token => params[:fb_token]).first
+						if user
 							{token: user.api_key.access_token,id:user.id}
+					else
+						email = params[:email]
+						password = if params[:password] then params[:password] else Faker::Internet.password(8) end
+						username = params[:username]
+						fb_token = params[:fb_token]
+
+						if email and password and username
+							user = User.new(email:email,password:password,username:username)
+							if fb_token
+								user.fb_token = fb_token
+								user.first_name = params[:first_name]
+								user.last_name = params[:last_name]
+								user.gender    = params[:gender]
+								user.age       = params[:age]
+								user.localization = params[:localization]
+							end
+							if user.save
+								{token: user.api_key.access_token,id:user.id}
+							else
+								error!('Bad Params',400)
+							end
 						else
 							error!('Bad Params',400)
 						end
-					else
-						error!('Bad Params',400)
 					end
 				end
 			end
