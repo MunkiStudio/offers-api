@@ -36,7 +36,8 @@ gem "binding_of_caller", :group => :development
 gem 'foreman', :group => :development
 gem 'thin', :group => :development
 
-gem 'sqlite3'
+gem 'sqlite3', :group => :development
+gem 'pg', :group => :production
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 
 
