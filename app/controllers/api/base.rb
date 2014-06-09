@@ -1,6 +1,5 @@
 # app/api/base.rb
 require 'grape/rabl'
-require 'grape-swagger'
 module API
 	class Base < Grape::API
 		mount API::V1::Base

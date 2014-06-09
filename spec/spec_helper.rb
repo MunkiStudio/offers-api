@@ -54,4 +54,13 @@ RSpec.configure do |config|
   config.include RSpec::Rails::RequestExampleGroup, type: :request, file_path: {
     file_path: /spec\/api/
   }
+
+  config.before(:each) do
+    Bullet.start_request if Bullet.enable?
+  end
+
+  config.after(:each) do
+    # Bullet.perform_out_of_channel_notifications if Bullet.enable? && Bullet.notification?
+    Bullet.end_request if Bullet.enable?
+  end
 end

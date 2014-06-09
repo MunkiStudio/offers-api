@@ -9,7 +9,7 @@ module API
 				paginate :per_page => 10, :max_per_page => 10
 				get do
 					authenticate!
-					users = User.order(:id)
+					users = User.includes(:notifications,:likes,:groups,:memberships).order(:id)
 					present paginate(users), with: API::V1::Entities::Users,root:'objects'
 					
 				end

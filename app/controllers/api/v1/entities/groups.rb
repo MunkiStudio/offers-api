@@ -10,7 +10,7 @@ module API
 					User.find(object.user_id).as_json
 				end
 				expose :offers do |object, options|
-					object.offers.as_json(:methods => [:thumb,:original])
+					object.offers.includes(:offers).as_json(:methods => [:thumb,:original])
 				end
 				expose :memberships do |object,options|
 					object.users.as_json

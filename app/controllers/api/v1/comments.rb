@@ -21,7 +21,7 @@ module API
 				get "offer/:id" do 
 					authenticate!
 					offer = Offer.find_by! id:params[:id]
-					present paginate(offer.comments), with: API::V1::Entities::Comments, root:'objects'
+					present paginate(offer.comments.includes(:user)), with: API::V1::Entities::Comments, root:'objects'
 					
 				end
 			end

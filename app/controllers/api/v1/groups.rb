@@ -13,7 +13,7 @@ module API
 				desc "Get the groups where the user identified by id are participating"
 				get "user/:id" do
 					authenticate!
-					groups = Group.where(:user_id => params[:id])
+					groups = Group.includes(:users).where(:user_id => params[:id])
 					present groups, with: API::V1::Entities::Groups, root:'objects'
 				end
 
