@@ -13,6 +13,23 @@ describe API::V1::Auth do
 			expect(response.status).to eq(201)
 			expect(json['token']).not_to be_empty
 		end
+
+		it 'create a new user with fb_token' do 
+			data = {
+				:fb_token => Faker::Bitcoin.address,
+				:email => Faker::Internet.email,
+				:username => Faker::Internet.user_name,
+				:first_name => Faker::Name.first_name,
+				:last_name => Faker::Name.last_name,
+				:gender => 'male',
+				:age => 28,
+				:localization => 'Talca'
+			}
+			post '/api/v1/auth/new', data
+			expect(response.status).to eq(201)
+			expect(json['token']).not_to be_empty
+		end
+
 	end
 	context 'Authorization required' do 
 		before(:each) do 

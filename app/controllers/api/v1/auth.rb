@@ -40,20 +40,24 @@ module API
 
 				desc "Register a new user"
 				post :new do 
-					if params[:fb_token]
+					email = params[:email]
+					password = if params[:password] then params[:password] else Faker::Internet.password(8) end
+					username = params[:username]
+					fb_token = params[:fb_token]
+					register = false
+					data = nil
+					if fb_token 
 						user = User.where(:fb_token => params[:fb_token]).first
-						if user
-							{token: user.api_key.access_token,id:user.id}
+						if user 
+							return {token: user.api_key.access_token,id:user.id}
+						else
+							register = true
 						end
-					else
-						email = params[:email]
-						password = if params[:password] then params[:password] else Faker::Internet.password(8) end
-						username = params[:username]
-						fb_token = params[:fb_token]
-
+					end
+					if register 
 						if email and password and username
 							user = User.new(email:email,password:password,username:username)
-							if fb_token
+							if fb_token	
 								user.fb_token = fb_token
 								user.first_name = params[:first_name]
 								user.last_name = params[:last_name]
@@ -62,7 +66,7 @@ module API
 								user.localization = params[:localization]
 							end
 							if user.save
-								{token: user.api_key.access_token,id:user.id}
+								return {token: user.api_key.access_token,id:user.id}
 							else
 								error!('Bad Params',400)
 							end

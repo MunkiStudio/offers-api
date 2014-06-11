@@ -37,6 +37,7 @@ group :development, :test do
 	gem "better_errors"
 	gem "binding_of_caller"
 	gem "bullet"
+	gem 'debugger'
 end
 
 group :test, :development, :darwin do 
