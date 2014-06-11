@@ -45,7 +45,6 @@ module API
 					username = params[:username]
 					fb_token = params[:fb_token]
 					register = false
-					data = nil
 					if fb_token 
 						user = User.where(:fb_token => params[:fb_token]).first
 						if user 
@@ -53,8 +52,10 @@ module API
 						else
 							register = true
 						end
+					else
+						register = true
 					end
-					if register 
+					if register
 						if email and password and username
 							user = User.new(email:email,password:password,username:username)
 							if fb_token	
