@@ -74,6 +74,7 @@ describe API::V1 do
 			}
 			put "/api/v1/groups/#{group.id}",data,headers
 			expect(response).to be_success
+
 			expect(json['objects']['name']).to eq(data[:attrs][:name])
 			expect(json['objects']['description']).to eq(data[:attrs][:description])
 

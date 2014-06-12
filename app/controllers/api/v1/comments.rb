@@ -15,11 +15,13 @@ module API
 					comment = Comment.new(params[:comment].to_h)
 					comment.user = current_user
 					comment.offer_id = params[:offer]
-					if comment.save
-						present comment, with: API::V1::Entities::Comments, root:'objects'
-					else
-						error_response(message: "Can't save comment", status: 400)
-					end
+					comment.save!
+					present comment, with: API::V1::Entities::Comments, root:'objects'
+					# if comment.save
+					# 	present comment, with: API::V1::Entities::Comments, root:'objects'
+					# else
+					# 	error_response(message: "Can't save comment", status: 400)
+					# end
 				end
 				
 				desc "Return a list of comments from especific Offer"

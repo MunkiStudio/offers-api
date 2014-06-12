@@ -14,13 +14,13 @@ module API
 				desc "Create a new offer"
 				params do 
 					requires :offer, type: Hash do 
-							requires :latitude, desc: "Latitude for geolocation of the offer"
-							requires :longitude, desc: "Longitude for geolocation of the offer"
-							requires :title, type: String, desc: "Title for the offer"
-							requires :description, desc: "Description for the offer"
-							requires :image, desc: "Image for the offer"
-							optional :access_public, type: Boolean, desc: "Type of access"
-							requires :category_ids, type: Array, desc: "List of id for the categories assigned to the offer"
+						requires :latitude, desc: "Latitude for geolocation of the offer"
+						requires :longitude, desc: "Longitude for geolocation of the offer"
+						requires :title, type: String, desc: "Title for the offer"
+						requires :description, desc: "Description for the offer"
+						requires :image, desc: "Image for the offer"
+						optional :access_public, type: Boolean, desc: "Type of access"
+						requires :category_ids, type: Array, desc: "List of id for the categories assigned to the offer"
 					end
 				end
 				post do 
@@ -32,8 +32,6 @@ module API
 					offer.image = ActionDispatch::Http::UploadedFile.new(image)
 					offer = current_user.offers.create!(params[:offer].to_h)
 					present  offer, with: API::V1::Entities::Offers, root:'objects'
-
-
 				end
 
 				desc "Return an Offer identified by ID"
@@ -53,12 +51,9 @@ module API
 				delete ":id" do 
 					authenticate!
 					offer = Offer.where(user_id:current_user.id).find(params[:id])
-					if offer
-						offer.delete
-						""	
-					else
-						error_response(message: e.message, status: 404)
-					end
+					offer.delete if offer
+					""	
+					
 				end
 
 				desc "Update an Offer identified by ID"
@@ -69,12 +64,8 @@ module API
 				put ':id' do
 					authenticate!
 					offer = Offer.where(user_id:current_user.id).find(params[:id])
-					if offer
-						offer.update params[:offer].except(:id).to_h
-						""
-					else
-						error_response(message: e.message, status: 404)
-					end
+					offer.update params[:offer].except(:id).to_h if offer
+					present  offer, with: API::V1::Entities::Offers, root:'objects'
 				end
 
 			end

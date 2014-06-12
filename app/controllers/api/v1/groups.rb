@@ -40,8 +40,8 @@ module API
 						user_ids.each do |u|
 							group.memberships.create(:user_id => u)
 						end
-						present group, with: API::V1::Entities::Groups, root:'objects'
 					end
+					present group, with: API::V1::Entities::Groups, root:'objects'
 				end
 
 				desc "(owner) Return a description of the group identified by id"
@@ -65,13 +65,11 @@ module API
 				put ":id" do 
 					authenticate!
 					group = current_user.groups.find(params[:id])
-					if params[:user_ids]
-						params[:user_ids].each do |u| 
-							group.memberships.find_by(:user_id => u).delete
-						end
-					elsif params[:attrs]
-						group.update params[:attrs].to_h
-					end		
+					
+					params[:user_ids].to_a.each do |u| 
+						group.memberships.find_by(:user_id => u).delete
+					end
+					group.update params[:attrs].to_h if params[:attrs]
 					present group, with: API::V1::Entities::Groups, root:'objects'
 				end
 
