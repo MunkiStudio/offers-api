@@ -56,6 +56,10 @@ describe API::V1 do
 
 		it 'can edit my offer' do 
 			offer = FactoryGirl.attributes_for(:offer)
+			offer[:category_ids] = []
+			categories.each do |c|
+				offer[:category_ids].push(c.id)
+			end
 			post '/api/v1/offers/',{:offer => offer},headers
 			expect(response).to be_success
 			offer[:title] = 'Title Edited'
@@ -65,9 +69,9 @@ describe API::V1 do
 			get "/api/v1/offers/#{id}",{:token => token}
 			expect(json['objects']['title']).to eq(offer[:title])
 
-			user  = FactoryGirl.create(:user)
-			offer = FactoryGirl.create(:offer,user:user)
-			put "/api/v1/offers/#{offer.id}",{:offer => offer},headers
+			user2  = FactoryGirl.create(:user)
+			offer = FactoryGirl.create(:offer,user:user2)
+			put "/api/v1/offers/#{offer.id}",{:offer => offer.attributes},headers
 			expect(response.status).to eq(404)
 		end
 	end

@@ -13,6 +13,17 @@ module API
 				end
 
 				desc "Create a new offer"
+				params do 
+					requires :offer, type: Hash do 
+							requires :latitude, desc: "Latitude for geolocation of the offer"
+							requires :longitude, desc: "Longitude for geolocation of the offer"
+							requires :title, type: String, desc: "Title for the offer"
+							requires :description, desc: "Description for the offer"
+							requires :image, desc: "Image for the offer"
+							optional :access_public, type: Boolean, desc: "Type of access"
+							requires :category_ids, type: Array, desc: "List of id for the categories assigned to the offer"
+					end
+				end
 				post do 
 					authenticate!
 					image = params[:offer][:image]
@@ -54,6 +65,7 @@ module API
 				desc "Update an Offer identified by ID"
 				params do 
 					requires :id, type: Integer, desc: "Identificador del offer"
+					requires :offer, type: Hash, desc: "Hash for the offer"
 				end
 				put ':id' do
 					authenticate!

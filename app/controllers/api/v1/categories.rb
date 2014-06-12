@@ -13,6 +13,9 @@ module API
 				end
 
 				desc "Get a category identified by ID"
+				params do 
+					requires :id, type: Integer, desc: "ID from selected categorie"
+				end
 				get ":id" do 
 					authenticate!
 					category = Category.where('id = ? or name = ?', params[:id], params[:id]).first

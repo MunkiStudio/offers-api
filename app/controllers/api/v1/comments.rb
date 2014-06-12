@@ -4,6 +4,12 @@ module API
 			include API::V1::Defaults
 			resource :comments do 
 				desc "Create a new comment for and offer form user"
+				params do
+					requires :comment, type: Hash do 
+						requires :content, desc: "Content for the comment"
+					end 
+					requires :offer, type: Integer, desc: "Id for the offer where the comment will be published"
+				end
 				post do
 					authenticate!
 					comment = Comment.new(params[:comment].to_h)
@@ -18,6 +24,9 @@ module API
 				
 				desc "Return a list of comments from especific Offer"
 				paginate :per_page => 10, :max_per_page => 10
+				params do 
+					requires :id, type: Integer, desc: "Id for the offer selected to see the comments"
+				end
 				get "offer/:id" do 
 					authenticate!
 					offer = Offer.find_by! id:params[:id]

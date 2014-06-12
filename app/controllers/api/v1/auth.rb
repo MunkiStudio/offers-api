@@ -6,6 +6,10 @@ module API
 			include API::V1::Defaults
 
 			resource :auth do 
+				desc "Login a user using the user_id obtained from Facebook, return the token"
+				params do 
+					requires :fb_token, type: String, desc: "uid from Facebook"
+				end
 				post :fb_login do 
 					if params[:fb_token]
 						user = User.where(:fb_token => params[:fb_token]).first
@@ -19,7 +23,7 @@ module API
 					end
 				end
 
-				desc "Login a user (return the token)"
+				desc "Login a user using email|username and password, return the token"
 				params do 
 					requires :login, type: String, desc: "Username or email"
 					requires :password, type: String, desc: "Password"
@@ -38,7 +42,18 @@ module API
 					end
 				end
 
-				desc "Register a new user"
+				desc "Register a new user, return the token. If the fb_token is given, the API return the user if exists or register the new user with facebook data"
+				params do
+					requires :email, 	type: String, desc: "User email"
+					optional :password, type: String, desc: "Optional if fb_token is given"
+					optional :username, type: String, desc: "Optional if fb_token is given"
+					optional :fb_token,	type: String, desc: "uid from Facebook"
+					optional :first_name, type: String, desc: "First name of the user (from Facebook)"
+					optional :last_name, type: String, desc: "Last name of the user (from Facebook)"
+					optional :gender, type: String, desc: "Gender of the user (from Facebook)"
+					optional :age, type: Integer, desc: "Age of the user (from Facebook)"
+					optional :localization, type: String, desc: "Localization of the user (from Facebook)"
+				end
 				post :new do 
 					email = params[:email]
 					password = if params[:password] then params[:password] else Faker::Internet.password(8) end

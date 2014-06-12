@@ -8,6 +8,7 @@ FactoryGirl.define do
     description {Faker::Lorem.paragraph(2)}
     image {fixture_file_upload(Rails.root.join('spec','fixtures','test.png'),'image/png')}
     access_public true
+    category_ids []
     user
   end
 end

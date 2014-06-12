@@ -1,12 +1,17 @@
 source 'https://rubygems.org'
 ruby '2.0.0'
 gem 'rails','~> 4.1.0'
-gem 'rails-api'
-gem 'grape'
+# gem 'rails-api'
+gem 'grape',:git =>'https://github.com/intridea/grape.git'
 gem 'kaminari'
 gem 'grape-kaminari'
 gem 'grape-entity'
 gem 'grape-rabl'
+
+#API Documentation
+gem 'rack-contrib'
+gem 'grape-swagger'
+gem 'grape-swagger-rails',:git => 'https://github.com/BrandyMint/grape-swagger-rails.git'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'

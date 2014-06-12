@@ -6,7 +6,7 @@ require "active_record/railtie"
 require "action_controller/railtie"
 require "action_mailer/railtie"
 # require "action_view/railtie"
-# require "sprockets/railtie"
+require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -29,5 +29,6 @@ module OffersApi
     # config.paths.add "app/api", glob: "**/*.rb"
     config.autoload_paths += Dir["#{Rails.root}/app/workers/*"]
     config.eager_load_paths += Dir["#{Rails.root}/app/workers/*"]
+    config.filter_parameters += [:password, :password_confirmation,:token,:fb_token]
   end
 end
