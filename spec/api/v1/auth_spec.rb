@@ -28,6 +28,16 @@ describe API::V1::Auth do
 			post '/api/v1/auth/new', data
 			expect(response.status).to eq(201)
 			expect(json['token']).not_to be_empty
+			#If the user with fb_token exists
+			user = FactoryGirl.attributes_for(:user)
+			token = SecureRandom.hex
+			user[:fb_token] = token
+			user = User.create(user)
+			data[:fb_token] = token 
+			post '/api/v1/auth/new', data
+			expect(response).to be_success
+			expect(json['token']).to eq(user.api_key.access_token)
+
 		end
 
 	end
@@ -61,8 +71,26 @@ describe API::V1::Auth do
 			post '/api/v1/auth/login',data 
 			expect(response.status).to eq(201)
 			expect(json['token']).to eq(@token)
+			data[:password] = 'passwordInvalida'
+			post '/api/v1/auth/login',data 
+			expect(response.status).to eq(401)
 		end
 
+		it 'login with fb_token' do 
+			user = FactoryGirl.attributes_for(:user)
+			token = SecureRandom.hex
+			user[:fb_token] = token
+			user = User.create(user)
+			post '/api/v1/auth/fb_login',{fb_token:token}
+			expect(response).to be_success
+			expect(json['token']).to eq(user.api_key.access_token)
+			post '/api/v1/auth/fb_login',{fb_token:'cualquier_token_que_no_existe'}
+			expect(response.status).to eq(401)
+			post '/api/v1/auth/fb_login'
+			expect(response.status).to eq(500)
+		end
+
+		
 		it 'with bad params' do 
 			@user[:email] = 'thisIsBadEmail.com'
 			post '/api/v1/auth/new',@user 

@@ -18,8 +18,6 @@ module API
 						else
 							error!('Unauthorized',401)
 						end
-					else
-						error!('Unauthorized',401)
 					end
 				end
 
@@ -29,13 +27,13 @@ module API
 					requires :password, type: String, desc: "Password"
 				end
 				post :login do
-					if params[:login].include?("@")
-						user = User.find_by_email(params[:login].downcase)
-					else
-						user = User.find_by_username(params[:login].downcase)
-					end
+					# if params[:login].include?("@")
+					# 	user = User.find_by_email(params[:login].downcase)
+					# else
+					# 	user = User.find_by_username(params[:login].downcase)
+					# end
+					user = User.where("username = ? OR email = ?", params[:login],params[:login]).first
 					if user && user.authenticate(params[:password])
-						# key = ApiKey.create(user_id:user.id)
 						{token: user.api_key.access_token,id:user.id}
 					else
 						error!('Unauthorized.',401)
