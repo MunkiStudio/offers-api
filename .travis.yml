@@ -17,3 +17,5 @@ deploy:
   app: offersapi
   on:
     repo: MunkiStudio/offers-api
+env:
+  secure: Y6b2flabrEgO0Y5s9oC4TQyMw3yMUOO7SAW9PfrcqGAzFAr344lCzUVDIJDZoacnPhL3Iv/Gcyt5W+SfiYEOzrbcFL/ghyiRXFDOWnTQRhiGNtUpPO8davZOVkviCdh3xNh3QV4NcjV6Tm7y/ZkS2nkc7+S9RMS88gRXnnw2+FU=

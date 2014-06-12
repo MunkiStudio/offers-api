@@ -59,16 +59,14 @@ module API
 					password = if params[:password] then params[:password] else Faker::Internet.password(8) end
 					username = params[:username]
 					fb_token = params[:fb_token]
-					register = false
+					register = true
 					if fb_token 
 						user = User.where(:fb_token => params[:fb_token]).first
 						if user 
+							register = false
 							return {token: user.api_key.access_token,id:user.id}
-						else
-							register = true
 						end
-					else
-						register = true
+						
 					end
 					if register
 						if email and password and username

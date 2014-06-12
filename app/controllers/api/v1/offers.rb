@@ -8,8 +8,7 @@ module API
 				paginate :per_page => 10, :max_per_page => 10
 				get do 
 					authenticate!
-					offers = Offer.order(:id)
-					present paginate(offers), with: API::V1::Entities::Offers, root:'objects'
+					present paginate(Offer.order(:id)), with: API::V1::Entities::Offers, root:'objects'
 				end
 
 				desc "Create a new offer"
