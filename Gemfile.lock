@@ -104,6 +104,7 @@ GEM
     dotenv-deployment (0.0.2)
     equalizer (0.0.9)
     erubis (2.7.0)
+    execjs (2.0.2)
     factory_girl (4.4.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.4.1)
@@ -276,6 +277,9 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (1.2.1)
       thread_safe (~> 0.1)
+    uglifier (2.5.0)
+      execjs (>= 0.3.0)
+      json (>= 1.8.0)
     unicorn (4.8.3)
       kgio (~> 2.6)
       rack
@@ -327,4 +331,5 @@ DEPENDENCIES
   sinatra
   sqlite3
   terminal-notifier-guard
+  uglifier
   unicorn

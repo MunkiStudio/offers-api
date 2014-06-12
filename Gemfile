@@ -21,6 +21,7 @@ gem 'geocoder'
 gem 'sidekiq'
 gem 'sinatra'
 gem 'foreman'
+gem 'uglifier'
 
 # Deploy with Capistrano
 # gem 'capistrano', :group => :development
