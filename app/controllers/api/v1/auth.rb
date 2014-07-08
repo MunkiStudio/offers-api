@@ -49,7 +49,7 @@ module API
 				end
 				post :new do 
 					email = params[:email]
-					password = if params[:password] then params[:password] else Faker::Internet.password(8) end
+					password = if params[:password] then params[:password] else SecureRandom.hex(8) end
 					username = params[:username]
 					fb_token = params[:fb_token]
 					register = true
