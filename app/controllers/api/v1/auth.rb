@@ -45,7 +45,7 @@ module API
 					optional :last_name, type: String, desc: "Last name of the user (from Facebook)"
 					optional :gender, type: String, desc: "Gender of the user (from Facebook)"
 					optional :age, type: Integer, desc: "Age of the user (from Facebook)"
-					optional :localization, type: String, desc: "Localization of the user (from Facebook)"
+					optional :location, type: String, desc: "Localization of the user (from Facebook)"
 				end
 				post :new do 
 					email = params[:email]
@@ -70,15 +70,15 @@ module API
 								user.last_name = params[:last_name]
 								user.gender    = params[:gender]
 								user.age       = params[:age]
-								user.localization = params[:localization]
+								user.localization = params[:location]
 							end
 							if user.save
 								return {token: user.api_key.access_token,id:user.id}
 							else
-								error!('Bad Params',400)
+								error!(user.errors.full_messages,400)
 							end
 						else
-							error!('Bad Params',400)
+							error!('Falta email, password o username',400)
 						end
 					end
 				end
