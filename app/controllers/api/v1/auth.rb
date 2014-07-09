@@ -59,7 +59,7 @@ module API
 						
 					end
 					if register
-						if email and password and username
+						if params[:email] and params[:password] and params[:username]
 							user = User.new(params)
 							if user.save
 								return {token: user.api_key.access_token,id:user.id}
