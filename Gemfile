@@ -8,6 +8,7 @@ gem 'grape-kaminari'
 gem 'grape-entity'
 gem 'grape-rabl'
 
+
 #API Documentation
 gem 'rack-contrib'
 gem 'grape-swagger'

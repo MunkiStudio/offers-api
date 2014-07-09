@@ -42,6 +42,10 @@ module API
 						end
 					end
 
+					def user_params
+						ActionController::Parameters.new(params).require(:user).permit(:email,:password,:username,:fb_token,:first_name,:last_name,:gender,:birthdate,:localization)
+					end
+
 					
 				end
 			end

@@ -9,7 +9,7 @@ describe API::V1::Auth do
 				:username => Faker::Internet.user_name,
 				:password => Faker::Internet.password(8)       
 			}
-			post '/api/v1/auth/new', data
+			post '/api/v1/auth/new', {:user => data}
 			expect(response.status).to eq(201)
 			expect(json['token']).not_to be_empty
 		end
@@ -22,10 +22,10 @@ describe API::V1::Auth do
 				:first_name => Faker::Name.first_name,
 				:last_name => Faker::Name.last_name,
 				:gender => 'male',
-				:age => 28,
+				:birdthdate => DateTime.now.to_date,
 				:localization => 'Talca'
 			}
-			post '/api/v1/auth/new', data
+			post '/api/v1/auth/new', {:user => data}
 			expect(response.status).to eq(201)
 			expect(json['token']).not_to be_empty
 			#If the user with fb_token exists
@@ -34,7 +34,7 @@ describe API::V1::Auth do
 			user[:fb_token] = token
 			user = User.create(user)
 			data[:fb_token] = token 
-			post '/api/v1/auth/new', data
+			post '/api/v1/auth/new', {:user => data}
 			expect(response).to be_success
 			expect(json['token']).to eq(user.api_key.access_token)
 
@@ -48,7 +48,7 @@ describe API::V1::Auth do
 				:username => Faker::Internet.user_name,
 				:password => Faker::Internet.password(8)       
 			}
-			post '/api/v1/auth/new', @user
+			post '/api/v1/auth/new', {:user => @user}
 			@token = json['token']
 		end
 
@@ -58,7 +58,7 @@ describe API::V1::Auth do
 				:login => @user[:email],
 				:password => @user[:password]
 			}
-			post '/api/v1/auth/login',data 
+			post '/api/v1/auth/login',{:user => data}
 			expect(response.status).to eq(201)
 			expect(json['token']).to eq(@token)
 		end 
@@ -68,11 +68,11 @@ describe API::V1::Auth do
 				:login => @user[:username],
 				:password => @user[:password]
 			}
-			post '/api/v1/auth/login',data 
+			post '/api/v1/auth/login',{:user => data}
 			expect(response.status).to eq(201)
 			expect(json['token']).to eq(@token)
 			data[:password] = 'passwordInvalida'
-			post '/api/v1/auth/login',data 
+			post '/api/v1/auth/login',{:user => data }
 			expect(response.status).to eq(401)
 		end
 
@@ -93,16 +93,16 @@ describe API::V1::Auth do
 		
 		it 'with bad params' do 
 			@user[:email] = 'thisIsBadEmail.com'
-			post '/api/v1/auth/new',@user 
+			post '/api/v1/auth/new',{:user => @user}
 			expect(response.status).to eq(400)
 			@user[:email] = 'Faker::Internet.email'
 			@user[:password] = '123456'
-			post '/api/v1/auth/new',@user 
+			post '/api/v1/auth/new',{:user => @user}
 			expect(response.status).to eq(400)
 			user = {
 				:email => @user[:email]
 			}
-			post '/api/v1/auth/new',user 
+			post '/api/v1/auth/new',{:user => user }
 			expect(response.status).to eq(400)
 		end
 	end

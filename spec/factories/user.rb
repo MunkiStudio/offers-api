@@ -6,7 +6,7 @@ FactoryGirl.define do
 		username   	{Faker::Internet.user_name}
 		password   	{Faker::Internet.password(8)}
 		gender 		"Male"
-		age		  	{Faker::Number.number(2)}
+		birthdate	DateTime.now.to_date
 		factory :user_with_offers do 
 			ignore do
 				offers_count 5
