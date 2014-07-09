@@ -39,13 +39,13 @@ module API
 				params do
 					requires :email, 	type: String, desc: "User email"
 					optional :password, type: String, desc: "Optional if fb_token is given"
-					optional :username, type: String, desc: "Optional if fb_token is given"
+					optional :username, type: String, desc: "Username"
 					optional :fb_token,	type: String, desc: "uid from Facebook"
 					optional :first_name, type: String, desc: "First name of the user (from Facebook)"
 					optional :last_name, type: String, desc: "Last name of the user (from Facebook)"
 					optional :gender, type: String, desc: "Gender of the user (from Facebook)"
 					optional :age, type: Integer, desc: "Age of the user (from Facebook)"
-					optional :location, type: String, desc: "Localization of the user (from Facebook)"
+					optional :localization, type: String, desc: "Localization of the user (from Facebook)"
 				end
 				post :new do 
 					params[:password] = if params[:password] then params[:password] else SecureRandom.hex(8) end
@@ -60,7 +60,7 @@ module API
 					end
 					if register
 						if params[:email] and params[:password] and params[:username]
-							user = User.new(params)
+							user = User.new(params.require(:user).permite(:email,:password,:username,:fb_token,:first_name,last_name,:gender,:age,:localization))
 							if user.save
 								return {token: user.api_key.access_token,id:user.id}
 							else
