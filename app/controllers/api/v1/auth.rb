@@ -48,10 +48,7 @@ module API
 					optional :location, type: String, desc: "Localization of the user (from Facebook)"
 				end
 				post :new do 
-					email = params[:email]
-					password = if params[:password] then params[:password] else SecureRandom.hex(8) end
-					username = params[:username]
-					fb_token = params[:fb_token]
+					params[:password] = if params[:password] then params[:password] else SecureRandom.hex(8) end
 					register = true
 					if fb_token 
 						user = User.where(:fb_token => params[:fb_token]).first
@@ -63,15 +60,7 @@ module API
 					end
 					if register
 						if email and password and username
-							user = User.new(email:email,password:password,username:username)
-							if fb_token	
-								user.fb_token = fb_token
-								user.first_name = params[:first_name]
-								user.last_name = params[:last_name]
-								user.gender    = params[:gender]
-								user.age       = params[:age]
-								user.localization = params[:location]
-							end
+							user = User.new(params)
 							if user.save
 								return {token: user.api_key.access_token,id:user.id}
 							else
