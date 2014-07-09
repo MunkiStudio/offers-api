@@ -50,7 +50,7 @@ module API
 				post :new do 
 					params[:password] = if params[:password] then params[:password] else SecureRandom.hex(8) end
 					register = true
-					if fb_token 
+					if params[:fb_token]
 						user = User.where(:fb_token => params[:fb_token]).first
 						if user 
 							register = false
