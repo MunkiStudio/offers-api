@@ -7,7 +7,7 @@ module API
 				expose :first_name
 				expose :last_name
 				expose :gender
-				expose :age
+				expose :birthdate
 				expose :email
 				expose :id
 				expose :offers do |object,options|

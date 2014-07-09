@@ -42,7 +42,7 @@ describe API::V1 do
 			user2 = FactoryGirl.create(:user)
 			offer2 = FactoryGirl.create(:offer,user:user2)
 			#Login user
-			post '/api/v1/auth/login',{:login => user.username,password:user.password}
+			post '/api/v1/auth/login',{:user => {:login => user.username,password:user.password}}
 			token = json['token']
 			#Send delete
 			delete "/api/v1/offers/#{offer.id}",{},{'x-token' => token}
